@@ -1,0 +1,24 @@
+{
+    "amazon.com": [
+        {
+            "domain": "example.com",
+            "da": 65,
+            "anchor_text": "best products",
+            "status": "active"
+        },
+        {
+            "domain": "brokenlinkexample.com",
+            "da": 20,
+            "anchor_text": "shop now",
+            "status": "broken"
+        }
+    ],
+    "wikipedia.org": [
+        {
+            "domain": "edu-site.com",
+            "da": 80,
+            "anchor_text": "learn more",
+            "status": "active"
+        }
+    ]
+}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <title>BacklinkAnalyzerPro</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>BacklinkAnalyzerPro 🔍</h1>
+    
+    <!-- Input Section -->
+    <div class="input-section">
+        <input type="text" id="competitorUrl" placeholder="कंपटीटर की URL डालें (जैसे: amazon.com)">
+        <button onclick="loadCompetitorData()">Analyze</button>
+        <button onclick="loadSampleData()">DEMO</button>
+    </div>
+
+    <!-- Backlink Table -->
+    <div id="results" class="hidden">
+        <h2>टॉप बैकलिंक्स</h2>
+        <div class="filters">
+            <select id="filterDA" onchange="filterData()">
+                <option value="">Domain Authority (सभी)</option>
+                <option value="50">DA 50+</option>
+                <option value="30">DA 30+</option>
+            </select>
+        </div>
+        <table id="backlinkTable">
+            <thead>
+                <tr>
+                    <th>Referring Domain</th>
+                    <th>DA</th>
+                    <th>Anchor Text</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+
+    <!-- Anchor Text Chart -->
+    <div class="chart-container">
+        <canvas id="anchorChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

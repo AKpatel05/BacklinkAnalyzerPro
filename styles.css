@@ -1,0 +1,45 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background: #f0f2f5;
+}
+
+.input-section {
+    margin: 20px 0;
+}
+
+input, button {
+    padding: 10px;
+    margin: 5px;
+}
+
+.hidden {
+    display: none;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.broken {
+    color: red;
+    font-weight: bold;
+}
+
+.chart-container {
+    max-width: 600px;
+    margin: 20px auto;
+}
