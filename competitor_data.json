@@ -20,5 +20,21 @@
             "anchor_text": "learn more",
             "status": "active"
         }
-    ]
+    ],
+    "google.com": [
+      {
+        "domain": "example1.com",
+        "da": 90,
+        "anchor_text": "search engine",
+        "status": "active"
+      }
+    ],
+    "youtube.com": [
+      {
+        "domain": "example2.com",
+        "da": 85,
+        "anchor_text": "watch videos",
+        "status": "active"
+      }
+   ]
 }
