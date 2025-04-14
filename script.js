@@ -3,7 +3,7 @@ let currentData = [];
 // Load Competitor Data
 async function loadCompetitorData() {
     const competitorUrl = document.getElementById('competitorUrl').value;
-    const response = await fetch('./data/competitor_data.json');
+    const response = await fetch('competitor_data.json');
     const data = await response.json();
     
     if (data[competitorUrl]) {
