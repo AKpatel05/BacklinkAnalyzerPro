@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional Backlink Analyzer Tool for SEO Competitor Analysis">
+    <meta name="keywords" content="backlink analysis, SEO tool, domain authority checker, anchor text analyzer">
+    <title>Backlink Analyzer Pro - SEO Tool</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 20px;
+            background: #f8f9fa;
+            line-height: 1.6;
+        }
+
+        .input-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        input, button {
+            padding: 12px 15px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+
+        .broken {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .chart-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h1, h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            text-align: center;
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Backlink Analyzer Pro 🔍</h1>
+    
+    <div class="input-section">
+        <input type="text" id="competitorUrl" placeholder="Enter competitor URL (e.g., amazon.com)">
+        <button onclick="loadCompetitorData()">Analyze</button>
+        <button onclick="loadSampleData()">DEMO</button>
+    </div>
+
+    <div id="results" class="hidden">
+        <h2>Top Backlinks Analysis</h2>
+        <div class="filters">
+            <select id="filterDA" onchange="filterData()">
+                <option value="">All Domain Authority</option>
+                <option value="50">DA 50+</option>
+                <option value="30">DA 30+</option>
+            </select>
+        </div>
+        <table id="backlinkTable">
+            <thead>
+                <tr>
+                    <th>Referring Domain</th>
+                    <th>DA</th>
+                    <th>Anchor Text</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="anchorChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let currentData = [];
+
+        async function loadCompetitorData() {
+            const competitorUrl = document.getElementById('competitorUrl').value;
+            try {
+                const response = await fetch('competitor_data.json');
+                const data = await response.json();
+                
+                if (data[competitorUrl]) {
+                    currentData = data[competitorUrl];
+                    document.getElementById('results').classList.remove('hidden');
+                    renderTable(currentData);
+                    renderAnchorChart(currentData);
+                } else {
+                    alert("Data not available for this URL. Try DEMO button.");
+                }
+            } catch (error) {
+                console.error('Error loading data:', error);
+                alert("Error loading data. Please try again.");
+            }
+        }
+
+        function loadSampleData() {
+            currentData = [
+                { domain: "example-seo-site.com", da: 85, anchor_text: "SEO tools", status: "active" },
+                { domain: "best-marketing.com", da: 92, anchor_text: "digital marketing", status: "active" },
+                { domain: "old-blog.com", da: 38, anchor_text: "click here", status: "broken" }
+            ];
+            document.getElementById('results').classList.remove('hidden');
+            renderTable(currentData);
+            renderAnchorChart(currentData);
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            
+            data.forEach(entry => {
+                const row = `<tr>
+                    <td>${entry.domain}</td>
+                    <td>${entry.da}</td>
+                    <td>${entry.anchor_text}</td>
+                    <td class="${entry.status}">${entry.status.toUpperCase()}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+
+        function filterData() {
+            const daValue = document.getElementById('filterDA').value;
+            const filtered = daValue ? currentData.filter(entry => entry.da >= parseInt(daValue)) : currentData;
+            renderTable(filtered);
+        }
+
+        function renderAnchorChart(data) {
+            const ctx = document.getElementById('anchorChart').getContext('2d');
+            const anchorCounts = data.reduce((acc, entry) => {
+                acc[entry.anchor_text] = (acc[entry.anchor_text] || 0) + 1;
+                return acc;
+            }, {});
+
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(anchorCounts),
+                    datasets: [{
+                        data: Object.values(anchorCounts),
+                        backgroundColor: [
+                            '#4ecdc4',
+                            '#45b7d1',
+                            '#ff6b6b',
+                            '#96ceb4',
+                            '#ffeead'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
